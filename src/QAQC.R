@@ -126,5 +126,52 @@ pn$locality[pn$locality == "Vieques, Puerto Rico, Punta Arenas 18°06'53.2\"N 65
 pn$locality[pn$locality == "Vieques, Puerto Ferro, Bahia La Chiva N18°06.769' W065°23.458'"]<- 8
 pn$locality[pn$locality == "Vieques, Puerto Ferro, Navio Beach N18°05.551' W065°26.653'"]<- 9
 
+## Fix species names that are not written correctly
+sort(unique(pn$pollinatorSpecies))
+pn$pollinatorSpecies[pn$pollinatorSpecies == "Aphrissa satira cubana"]<- "Aphrissa statira cubana"
+pn$pollinatorSpecies[pn$pollinatorSpecies == "Aphrissa statina cubana"]<- "Aphrissa statira cubana"
+pn$pollinatorSpecies[pn$pollinatorSpecies == "Aphrissa statira cabuna"]<- "Aphrissa statira cubana"
+pn$pollinatorSpecies[pn$pollinatorSpecies == "Ascia monuste"]<- "Ascia monuste eubotea"
+pn$pollinatorSpecies[pn$pollinatorSpecies == "Battus polydamas"]<- "Battus polydamas thyamus"
+pn$pollinatorSpecies[pn$pollinatorSpecies == "Campsomeris dorasata"]<- "Campsomeris dorsata"
+pn$pollinatorSpecies[pn$pollinatorSpecies == "Campsomeris epipphium"]<- "Campsomeris ephippium"
+pn$pollinatorSpecies[pn$pollinatorSpecies == "Danaus plexippus"]<- "Danaus plexippus portoricensis"
+pn$pollinatorSpecies[pn$pollinatorSpecies == "Danaus plexippus portoricencis"]<- "Danaus plexippus portoricensis"
+pn$pollinatorSpecies[pn$pollinatorSpecies == "Dioprosopa"]<- "Dioprosopa sp"
+pn$pollinatorSpecies[pn$pollinatorSpecies == "Glutophrissa drusilla poeyi"]<- "Glutophrissa drusilla boydi"
+pn$pollinatorSpecies[pn$pollinatorSpecies == "Glutophrissia drusilla boydi"]<- "Glutophrissa drusilla boydi"
+pn$pollinatorSpecies[pn$pollinatorSpecies == "Hylephila phyleus"]<- "Hylephila phyleus phyleus"
+pn$pollinatorSpecies[pn$pollinatorSpecies == "No pollinator"]<- "no pollinator"
+pn$pollinatorSpecies[pn$pollinatorSpecies == "Panoquina panoquinoide"]<- "Panoquina panoquinoides panoquinoides"
+pn$pollinatorSpecies[pn$pollinatorSpecies == "Phoebis agarithe antilla"]<- "Phoebis agarithe antillia"
+pn$pollinatorSpecies[pn$pollinatorSpecies == "Pseudochrysops bornoi ecoboi"]<- "Pseudochrysops bornoi escobioi"
+pn$pollinatorSpecies[pn$pollinatorSpecies == "Scarabeidae"]<- "Scarabaeidae"
+pn$pollinatorSpecies[pn$pollinatorSpecies == "Eristalis vinetorum"]<- "Palpada vinetorum"
+pn$pollinatorSpecies[pn$pollinatorSpecies == "Philornis"]<- "Philoris sp"
+sort(unique(pn$plantSpecies))
+pn$plantSpecies[pn$plantSpecies == "Citharexylum"]<- "Citharexylum sp"
+pn$plantSpecies[pn$plantSpecies == "Macroptillum atropurpureum"]<- "Macroptilium atropurpureum"
+
+## Create relational data for the species
+pol_sp <- sort(unique(pn$pollinatorSpecies))
+func_group <- c("butterfly", "butterfly", "wasp", "bird", "butterfly", "bee", "butterfly",
+                "butterfly", "butterfly", "wasp", "fly", "wasp", "wasp", "wasp", "wasp",
+                "wasp", "bee", "bee", "bee", "beetle","fly", "butterfly", "butterfly",
+                "beetle","fly", "fly", "butterfly", "butterfly", "fly", "fly", "fly", 
+                "butterfly", "butterfly", "butterfly", "butterfly", "butterfly",
+                "butterfly", "hemipteran", "butterfly", "butterfly", "wasp", 
+                "butterfly", "butterfly", "wasp", "hemipteran", "fly","no pollinator",
+                "fly", "fly", "fly", "fly","butterfly", "butterfly", "butterfly",
+                "ant", "wasp","fly", "butterfly", "butterfly", "butterfly", "wasp",
+                "fly", "butterfly", "bird", "beetle", "wasp", "fly", "fly", "fly", 
+                "fly", "butterfly", "moth", "fly","butterfly", "bee")
+pol_sp<- data.frame(pol_sp, func_group)
+names(pol_sp)<- c("pollinatorSpecies", "funcgroup")
+pol_sp<- as_tibble(pol_sp)
+pol_sp<- filter(pol_sp, pollinatorSpecies != "no pollinator", funcgroup != "no pollinator")
+
+#save(pol_sp, file = "data/pol_sp.csv")
+
 ## Save as r file
 #save(pn, file = "data/pol_net.Rdata")
+#save(pn, file = "data/pol_net.csv")
