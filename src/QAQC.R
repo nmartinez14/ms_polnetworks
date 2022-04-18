@@ -137,7 +137,7 @@ pn$pollinatorSpecies[pn$pollinatorSpecies == "Campsomeris dorasata"]<- "Campsome
 pn$pollinatorSpecies[pn$pollinatorSpecies == "Campsomeris epipphium"]<- "Campsomeris ephippium"
 pn$pollinatorSpecies[pn$pollinatorSpecies == "Danaus plexippus"]<- "Danaus plexippus portoricensis"
 pn$pollinatorSpecies[pn$pollinatorSpecies == "Danaus plexippus portoricencis"]<- "Danaus plexippus portoricensis"
-pn$pollinatorSpecies[pn$pollinatorSpecies == "Dioprosopa"]<- "Dioprosopa sp"
+pn$pollinatorSpecies[pn$pollinatorSpecies == "Dioprosopa sp"]<- "Dioprosopa clavata"
 pn$pollinatorSpecies[pn$pollinatorSpecies == "Glutophrissa drusilla poeyi"]<- "Glutophrissa drusilla boydi"
 pn$pollinatorSpecies[pn$pollinatorSpecies == "Glutophrissia drusilla boydi"]<- "Glutophrissa drusilla boydi"
 pn$pollinatorSpecies[pn$pollinatorSpecies == "Hylephila phyleus"]<- "Hylephila phyleus phyleus"
@@ -148,8 +148,10 @@ pn$pollinatorSpecies[pn$pollinatorSpecies == "Pseudochrysops bornoi ecoboi"]<- "
 pn$pollinatorSpecies[pn$pollinatorSpecies == "Scarabeidae"]<- "Scarabaeidae"
 pn$pollinatorSpecies[pn$pollinatorSpecies == "Eristalis vinetorum"]<- "Palpada vinetorum"
 pn$pollinatorSpecies[pn$pollinatorSpecies == "Philornis"]<- "Philoris sp"
+pn$pollinatorSpecies[pn$pollinatorSpecies == "Bembix oculata"]<- "Bembix sp"
 sort(unique(pn$plantSpecies))
 pn$plantSpecies[pn$plantSpecies == "Citharexylum"]<- "Citharexylum sp"
+pn$plantSpecies[pn$plantSpecies == "Citharexylum pendular"]<- "Citharexylum sp"
 pn$plantSpecies[pn$plantSpecies == "Macroptillum atropurpureum"]<- "Macroptilium atropurpureum"
 
 ## Create relational data for the species
@@ -169,9 +171,13 @@ pol_sp<- data.frame(pol_sp, func_group)
 names(pol_sp)<- c("pollinatorSpecies", "funcgroup")
 pol_sp<- as_tibble(pol_sp)
 pol_sp<- filter(pol_sp, pollinatorSpecies != "no pollinator", funcgroup != "no pollinator")
+#write.csv(pol_sp, file = "data/pol_sp.csv") 
 
-#save(pol_sp, file = "data/pol_sp.csv")
+## Save the plant species 
+plant_sp <- sort(unique(pn$plantSpecies))
+plant_sp<- data.frame(plant_sp)
+#write.csv(plant_sp, file = "data/plant_sp.csv") 
 
 ## Save as r file
 #save(pn, file = "data/pol_net.Rdata")
-#save(pn, file = "data/pol_net.csv")
+#write.csv(pn, file = "data/pol_net.csv") 
