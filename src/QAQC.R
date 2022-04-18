@@ -98,7 +98,8 @@ plots<- data.frame(locality, beach)
 plots<-mutate(plots, city = c("Loiza",  "Isabela","Fajardo", "Cabo Rojo", "Manati", "Vieques", "Vieques", "Vieques", "Vieques"))
 plots<- mutate(plots, latitude = c("N18°26.670", "N18°30.509", "N18°22.478", "N17°56.160", "N18°28.205", "N18°05.472", "N18°05.886","N18°06.769", "N18°05.551"))
 plots<- mutate(plots, longitude = c("W65°55.100", "W67°00.850", "W65°38.885", "W67°11.301", "W66°27.096", "W65°27.066", "W65°34.378","W65°23.458", "W65°26.653"))
-#save(plots, file = "data/plots.csv")
+
+#write.csv(plots, file = "data/plots.csv") 
 
 #Give the locality an id number
 pn$locality[pn$locality == "Isabela, Puerto Rico"]<- 2
