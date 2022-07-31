@@ -46,3 +46,16 @@ pinones<- read.csv("data/pinones.csv", stringsAsFactors = TRUE)
 ## Create matrix
 
 pinones_web<-frame2webs(pinones,type.out ="list", varnames= c("plantSpecies", "pollinatorSpecies", "treatment","visitsperhr"))
+
+nets<- frame2webs(pinones,type.out ="list", varnames= c("plantSpecies", "pollinatorSpecies", "year","visitsperhr"))
+
+## Use network level function for the network metrics
+
+networklevel(pinones_web$before, index = c("connectance", "modularity", "weighted NODF", "interaction evenness", "H2", "robustness"))
+networklevel(pinones_web$after, index = c("connectance", "modularity", "weighted NODF", "interaction evenness", "H2", "robustness"))
+
+networklevel(nets$`2014`, index = c("connectance", "modularity", "weighted NODF", "interaction evenness", "H2", "robustness"))
+networklevel(nets$`2015`, index = c("connectance", "modularity", "weighted NODF", "interaction evenness", "H2", "robustness"))
+networklevel(nets$`2016`, index = c("connectance", "modularity", "weighted NODF", "interaction evenness", "H2", "robustness"))
+networklevel(nets$`2018`, index = c("connectance", "modularity", "weighted NODF", "interaction evenness", "H2", "robustness"))
+networklevel(nets$`2019`, index = c("connectance", "modularity", "weighted NODF", "interaction evenness", "H2", "robustness"))
