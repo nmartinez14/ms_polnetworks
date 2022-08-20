@@ -45,17 +45,80 @@ pinones<- read.csv("data/pinones.csv", stringsAsFactors = TRUE)
 
 ## Create matrix
 
-pinones_web<-frame2webs(pinones,type.out ="list", varnames= c("plantSpecies", "pollinatorSpecies", "treatment","visitsperhr"))
+pinones_web<-frame2webs(pinones,type.out ="list", varnames= c("plantSpecies", 
+                                "pollinatorSpecies", "treatment","visitsperhr"))
 
-nets<- frame2webs(pinones,type.out ="list", varnames= c("plantSpecies", "pollinatorSpecies", "year","visitsperhr"))
+nets<- frame2webs(pinones,type.out ="list", varnames= c("plantSpecies", 
+                                    "pollinatorSpecies", "year","visitsperhr"))
 
 ## Use network level function for the network metrics
 
-networklevel(pinones_web$before, index = c("connectance", "modularity", "weighted NODF", "interaction evenness", "H2", "robustness"))
-networklevel(pinones_web$after, index = c("connectance", "modularity", "weighted NODF", "interaction evenness", "H2", "robustness"))
+networklevel(pinones_web$after, index = c("connectance", "modularity", "weighted NODF",
+                                           "interaction evenness", "H2", "robustness"))
+networklevel(pinones_web$after, index = c("connectance", "modularity", "weighted NODF", 
+                                          "interaction evenness", "H2", "robustness"))
 
-networklevel(nets$`2014`, index = c("connectance", "modularity", "weighted NODF", "interaction evenness", "H2", "robustness"))
-networklevel(nets$`2015`, index = c("connectance", "modularity", "weighted NODF", "interaction evenness", "H2", "robustness"))
-networklevel(nets$`2016`, index = c("connectance", "modularity", "weighted NODF", "interaction evenness", "H2", "robustness"))
-networklevel(nets$`2018`, index = c("connectance", "modularity", "weighted NODF", "interaction evenness", "H2", "robustness"))
-networklevel(nets$`2019`, index = c("connectance", "modularity", "weighted NODF", "interaction evenness", "H2", "robustness"))
+networklevel(nets$`2014`, index = c("connectance", "modularity", "weighted NODF", 
+                                    "interaction evenness", "H2", "robustness"))
+networklevel(nets$`2015`, index = c("connectance", "modularity", "weighted NODF",
+                                    "interaction evenness", "H2", "robustness"))
+networklevel(nets$`2016`, index = c("connectance", "modularity", "weighted NODF", 
+                                    "interaction evenness", "H2", "robustness"))
+networklevel(nets$`2018`, index = c("connectance", "modularity", "weighted NODF", 
+                                    "interaction evenness", "H2", "robustness"))
+networklevel(nets$`2019`, index = c("connectance", "modularity", "weighted NODF", 
+                                    "interaction evenness", "H2", "robustness"))
+
+## NODF comparing values to the null model
+
+obs.2014 <- unlist(networklevel(nets$`2014`, index="weighted NODF"))
+
+
+nulls.2014 <- nullmodel(nets$`2014`, N=10000, method=3)
+null.2014 <- unlist(sapply(nulls.2014, networklevel, index="weighted NODF"))
+
+null.2014<-as.data.frame(null.2014)
+mn.2014<- mean(null.2014$null.2014)
+sen.2014<- sd(null.2014$null.2014)/sqrt(length(null.2014$null.2014))
+
+z.2014<- (mn.2014-obs.2014)/sen.2014
+z.2014
+
+ggplot(null.2014,aes(null.2014))+
+  geom_histogram(color= "white", aes(y=..density..))+
+  geom_vline(xintercept = obs.2014, color = "red")
+
+## Using the treatment as comparison instead of per year.
+obs.before <- unlist(networklevel(pinones_web$before, index="weighted NODF"))
+
+
+nulls.before <- nullmodel(pinones_web$before, N=10000, method=3)
+null.before <- unlist(sapply(nulls.before, networklevel, index="weighted NODF"))
+
+null.before<-as.data.frame(null.before)
+mn.before<- mean(null.before$null.before)
+sen.before<- sd(null.before$null.before)/sqrt(length(null.before$null.before))
+
+z.before<- (mn.before-obs.before)/sen.before
+z.before
+
+ggplot(null.before,aes(null.before))+
+  geom_histogram(color= "white", aes(y=..density..))+
+  geom_vline(xintercept = obs.before, color = "red")
+
+obs.after <- unlist(networklevel(pinones_web$after, index="weighted NODF"))
+
+
+nulls.after <- nullmodel(pinones_web$after, N=10000, method=3)
+null.after <- unlist(sapply(nulls.after, networklevel, index="weighted NODF"))
+
+null.after<-as.data.frame(null.after)
+mn.after<- mean(null.after$null.after)
+sen.after<- sd(null.after$null.after)/sqrt(length(null.after$null.after))
+
+z.after<- (mn.after-obs.after)/sen.after
+z.after
+
+ggplot(null.after,aes(null.after))+
+  geom_histogram(color= "white", aes(y=..density..))+
+  geom_vline(xintercept = obs.after, color = "red")
