@@ -26,7 +26,7 @@ pollinators$funcgroup[pollinators$funcgroup == "hemipteran"]<- "others"
 pollinators$funcgroup[pollinators$funcgroup == "beetle"]<- "others"
 pollinators$funcgroup[pollinators$funcgroup == "moth"]<- "butterfly"
   
-## Graph for the abundace of species per year
+## Graph for the abundance of species per year
 library(gridExtra)
 library(ggbeeswarm)
 ggplot(pollinators,aes(funcgroup,ratio, fill= as.factor(funcgroup)))+
@@ -41,6 +41,27 @@ ggplot(pollinators,aes(funcgroup,ratio, fill= as.factor(funcgroup)))+
         strip.text = element_text(size = 16))
   ggsave("funcGvisits.pdf", width= 8.5, height = 6)
 
+## Plant species frequency of observations per year
+  pspp<-pinones %>%   
+    group_by(year, plantSpecies) %>% 
+    summarise(n = sum(inflorescencesVisited)) 
 
-
-
+  plants<-left_join(pspp, hours, by = "year")
+  plants<-plants %>% 
+    group_by(year, plantSpecies, n) %>% 
+    summarise(ratio = n/hrsperyear) 
+  
+## Graph for the plants
+  ggplot(plants,aes( x= reorder(plantSpecies, ratio, sum), y= ratio, fill= as.factor(year)))+
+    geom_col(position = 'stack', show.legend = TRUE)+
+    scale_fill_manual('year', values=c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2"))+
+    theme_minimal()+
+    theme(legend.position = "bottom", legend.text = element_text(size = 18), legend.title = element_text(size = 18))+
+    xlab("Plant Species")+
+    ylab("Frequency of Observations")+
+    coord_flip()+
+    theme(axis.text.y = element_text(face = "italic", size = 16))+
+    theme(axis.text.x = element_text(size = 14))+
+    theme(axis.title.y= element_text(size = 18))+
+    theme(axis.title.x= element_text(size = 18))
+  ggsave("plantspfreq.pdf", width= 8.5, height = 6)
