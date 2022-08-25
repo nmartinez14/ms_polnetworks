@@ -44,7 +44,8 @@ pinones<- pinones %>%
 pinones<- read.csv("data/pinones.csv", stringsAsFactors = TRUE)
 
 ## Create matrix
-
+## First matrix compiling the years into treaments (before and after the hurricane)
+## Second matrix is by year
 pinones_web<-frame2webs(pinones,type.out ="list", varnames= c("plantSpecies", 
                                 "pollinatorSpecies", "treatment","visitsperhr"))
 

@@ -65,3 +65,5 @@ ggplot(pollinators,aes(funcgroup,ratio, fill= as.factor(funcgroup)))+
     theme(axis.title.y= element_text(size = 18))+
     theme(axis.title.x= element_text(size = 18))
   ggsave("plantspfreq.pdf", width= 8.5, height = 6)
+  
+## Statistical analysis
