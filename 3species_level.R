@@ -56,6 +56,11 @@ SP<-rbind(SP, SP5)
 
 pol_level<-inner_join(SP, pol_sp, by= "pollinatorSpecies")
 pol_level$...1<- NULL
+pol_level$funcgroup[pol_level$funcgroup == "ant"]<- "others"
+pol_level$funcgroup[pol_level$funcgroup == "hemipteran"]<- "others"
+pol_level$funcgroup[pol_level$funcgroup == "beetle"]<- "others"
+pol_level$funcgroup[pol_level$funcgroup == "moth"]<- "butterfly"
+pol_level$year<- as.factor(pol_level$year)
 #write.csv(pol_level, file = "data/pol_level.csv")
 
 ## Repeat the process but for the plant species.
@@ -97,4 +102,17 @@ P<-rbind(P, P5)
 
 plant_level<-inner_join(P, plant_sp, by= "plantSpecies")
 plant_level$...1<- NULL
+plant_level$year<- as.factor(plant_level$year)
 #write.csv(plant_level, file = "data/plant_level.csv")
+
+## Clear environment for better workflow
+rm(list = ls())
+pol_level<-read_csv("data/pol_level.csv") 
+pol_level$...1<- NULL
+pol_level$year<-as.factor(pol_level$year)
+plant_level<- read_csv("data/plant_level.csv")
+plant_level$...1<- NULL
+plant_level$year<- as.factor(plant_level$year)
+## Create models for the pollinator level
+
+glm1<- glm(degree ~ funcgroup + year -1, data = pol_level, family = Gamma(link =  "identity"))
